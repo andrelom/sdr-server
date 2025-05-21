@@ -12,6 +12,19 @@ services:
       - sdrserver
       - cloudflaretunnel
   #
+  # Glances
+  sdrserver-glances:
+    networks:
+      - sdrserver
+      - cloudflaretunnel
+    labels:
+      - traefik.enable=true
+      # Default
+      - traefik.http.services.sdrserver-glances.loadbalancer.server.port=61208
+      - traefik.http.routers.sdrserver-glances.service=sdrserver-glances
+      - traefik.http.routers.sdrserver-glances.entrypoints=web
+      - traefik.http.routers.sdrserver-glances.rule=Host(`glances-sdr.andrelom.com`)
+  #
   # Cloudflared Tunnel
   sdrserver-cloudflared:
     image: cloudflare/cloudflared:latest
@@ -25,16 +38,3 @@ services:
     depends_on:
       sdrserver-traefik:
         condition: service_started
-  #
-  # Glances
-  sdrserver-glances:
-    networks:
-      - sdrserver
-      - cloudflaretunnel
-    labels:
-      - traefik.enable=true
-      # Default
-      - traefik.http.services.sdrserver-glances.loadbalancer.server.port=61208
-      - traefik.http.routers.sdrserver-glances.service=sdrserver-glances
-      - traefik.http.routers.sdrserver-glances.entrypoints=web
-      - traefik.http.routers.sdrserver-glances.rule=Host(`glances-sdr.andrelom.com`)
