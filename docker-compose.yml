@@ -46,7 +46,7 @@ services:
       context: ./docker/airspy/build
       dockerfile: Dockerfile
       args:
-        AIRSPY_DOWNLOAD_URL: ${AIRSPY_DOWNLOAD_URL}
+        AIRSPY_TARGET_PLATFORM: ${AIRSPY_TARGET_PLATFORM}
     container_name: sdrserver-airspy
     restart: unless-stopped
     privileged: true

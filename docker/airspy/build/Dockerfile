@@ -5,14 +5,27 @@
 
 FROM ubuntu:latest AS build
 
-ARG AIRSPY_DOWNLOAD_URL
+ARG AIRSPY_TARGET_PLATFORM
 
 WORKDIR /airspy
 
-RUN apt-get update && \
-  apt-get install -y wget && \
-  wget -O spyserver.tgz ${AIRSPY_DOWNLOAD_URL} && \
-  tar xvzf spyserver.tgz && \
+RUN apt-get update && apt-get install -y wget
+
+RUN set -ex; \
+  if [ "$AIRSPY_TARGET_PLATFORM" = "linux/amd64" ]; then \
+  URL="https://airspy.com/downloads/spyserver-linux-x64.tgz"; \
+  elif [ "$AIRSPY_TARGET_PLATFORM" = "linux/arm64" ]; then \
+  URL="https://airspy.com/downloads/spyserver-arm64.tgz"; \
+  elif [ "$AIRSPY_TARGET_PLATFORM" = "linux/arm/v7" ]; then \
+  URL="https://airspy.com/downloads/spyserver-arm32.tgz"; \
+  else \
+  echo "Unsupported AirSpy Target Platform: $AIRSPY_TARGET_PLATFORM"; \
+  exit 1; \
+  fi; \
+  wget -O spyserver.tgz "$URL"; \
+  tar xvzf spyserver.tgz;
+
+RUN set -ex; \
   sed -i "s/^bind_port = .*/bind_port = 5555/" spyserver.config
 
 #
