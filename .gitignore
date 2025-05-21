@@ -1,0 +1,14 @@
+#
+# Folders
+
+tmp/
+
+docker/spyserver/data/
+
+#
+# Files
+
+*.log
+*.local
+
+.env

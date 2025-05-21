@@ -1,0 +1,60 @@
+networks:
+  hades:
+    driver: bridge
+
+services:
+  #
+  # Traefik
+  hades-traefik:
+    image: traefik:v3.3.6
+    container_name: hades-traefik
+    restart: unless-stopped
+    networks:
+      - hades
+    ports:
+      - 80:80
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+  #
+  # Glances
+  hades-glances:
+    image: nicolargo/glances:latest
+    container_name: hades-glances
+    restart: unless-stopped
+    pid: host
+    networks:
+      - hades
+    environment:
+      - GLANCES_OPT=-w
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - traefik.enable=true
+      # Default
+      - traefik.http.services.hades-glances.loadbalancer.server.port=61208
+      - traefik.http.routers.hades-glances.service=hades-glances
+      - traefik.http.routers.hades-glances.entrypoints=web
+      - traefik.http.routers.hades-glances.rule=Host(`glances.hades.localhost`)
+  #
+  # Spy SDR Server
+  hades-spyserver:
+    build:
+      context: ./docker/spyserver/build
+      dockerfile: Dockerfile
+      args:
+        SPYSERVER_DOWNLOAD_URL: ${SPYSERVER_DOWNLOAD_URL}
+    container_name: hades-spyserver
+    restart: unless-stopped
+    privileged: true
+    networks:
+      - hades
+    ports:
+      - 5555:5555
+    volumes:
+      - ./docker/spyserver/data:/spyserver/data
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
