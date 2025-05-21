@@ -40,14 +40,14 @@ services:
       - traefik.http.routers.sdrserver-glances.entrypoints=web
       - traefik.http.routers.sdrserver-glances.rule=Host(`glances.sdrserver.localhost`)
   #
-  # Spy SDR Server
-  sdrserver-spyserver:
+  # AirSpy Server
+  sdrserver-airspy:
     build:
-      context: ./docker/spyserver/build
+      context: ./docker/airspy/build
       dockerfile: Dockerfile
       args:
-        SPYSERVER_DOWNLOAD_URL: ${SPYSERVER_DOWNLOAD_URL}
-    container_name: sdrserver-spyserver
+        AIRSPY_DOWNLOAD_URL: ${AIRSPY_DOWNLOAD_URL}
+    container_name: sdrserver-airspy
     restart: unless-stopped
     privileged: true
     networks:
@@ -55,6 +55,6 @@ services:
     ports:
       - 5555:5555
     volumes:
-      - ./docker/spyserver/data:/spyserver/data
+      - ./docker/airspy/data:/airspy/data
     devices:
       - /dev/bus/usb:/dev/bus/usb
