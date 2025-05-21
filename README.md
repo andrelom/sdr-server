@@ -6,9 +6,7 @@ This project provides Docker Compose configurations and supporting files to simp
 
 For detailed information about the underlying server software used in this project, please visit the official [AirSpy](https://airspy.com/download/).
 
-## Development
-
-### Getting Started:
+## Getting Started
 
 First, make a copy of the `.env.template` file and rename it to `.env`. Update the values inside if needed.
 
@@ -16,12 +14,18 @@ First, make a copy of the `.env.template` file and rename it to `.env`. Update t
 cp .env.template .env
 ```
 
+After the update, modify the newly created `.env` file by adjusting the environment variable values accordingly.
+
+### Docker
+
 Then, start the project using the commands below.
 
 ```sh
 # Start the project.
 docker compose up -d;
 ```
+
+#### Optional
 
 To stop the Docker containers, just run the following command.
 
@@ -32,6 +36,18 @@ docker compose down;
 # Optional: Prune all unused resources from the system.
 docker system prune -af; docker volume prune -af; docker network prune -f;
 ```
+
+## Available Target Platforms
+
+The supported Linux target platforms include:
+
+| Platform     | Architecture Description          | Common Use Cases                                  |
+| ------------ | --------------------------------- | ------------------------------------------------- |
+| linux/amd64  | 64-bit x86 architecture           | Desktops, laptops, servers with Intel/AMD CPUs    |
+| linux/arm64  | 64-bit ARM architecture (AARCH64) | Raspberry Pi 4+, ARM servers, Apple M1/M2/M3 Macs |
+| linux/arm/v7 | 32-bit ARM architecture (ARMv7)   | Raspberry Pi 2/3, older embedded ARM devices      |
+
+You can set the target platform by modifying the `AIRSPY_TARGET_PLATFORM` environment variable in the `.env` file.
 
 ## Project Status
 
