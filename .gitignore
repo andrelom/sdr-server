@@ -3,7 +3,7 @@
 
 tmp/
 
-docker/spyserver/data/
+docker/airspy/data/
 
 #
 # Files
