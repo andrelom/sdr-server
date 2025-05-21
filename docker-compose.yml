@@ -1,16 +1,16 @@
 networks:
-  hades:
+  sdrserver:
     driver: bridge
 
 services:
   #
   # Traefik
-  hades-traefik:
+  sdrserver-traefik:
     image: traefik:v3.3.6
-    container_name: hades-traefik
+    container_name: sdrserver-traefik
     restart: unless-stopped
     networks:
-      - hades
+      - sdrserver
     ports:
       - 80:80
     volumes:
@@ -21,13 +21,13 @@ services:
       - --entrypoints.web.address=:80
   #
   # Glances
-  hades-glances:
+  sdrserver-glances:
     image: nicolargo/glances:latest
-    container_name: hades-glances
+    container_name: sdrserver-glances
     restart: unless-stopped
     pid: host
     networks:
-      - hades
+      - sdrserver
     environment:
       - GLANCES_OPT=-w
     volumes:
@@ -35,23 +35,23 @@ services:
     labels:
       - traefik.enable=true
       # Default
-      - traefik.http.services.hades-glances.loadbalancer.server.port=61208
-      - traefik.http.routers.hades-glances.service=hades-glances
-      - traefik.http.routers.hades-glances.entrypoints=web
-      - traefik.http.routers.hades-glances.rule=Host(`glances.hades.localhost`)
+      - traefik.http.services.sdrserver-glances.loadbalancer.server.port=61208
+      - traefik.http.routers.sdrserver-glances.service=sdrserver-glances
+      - traefik.http.routers.sdrserver-glances.entrypoints=web
+      - traefik.http.routers.sdrserver-glances.rule=Host(`glances.sdrserver.localhost`)
   #
   # Spy SDR Server
-  hades-spyserver:
+  sdrserver-spyserver:
     build:
       context: ./docker/spyserver/build
       dockerfile: Dockerfile
       args:
         SPYSERVER_DOWNLOAD_URL: ${SPYSERVER_DOWNLOAD_URL}
-    container_name: hades-spyserver
+    container_name: sdrserver-spyserver
     restart: unless-stopped
     privileged: true
     networks:
-      - hades
+      - sdrserver
     ports:
       - 5555:5555
     volumes:

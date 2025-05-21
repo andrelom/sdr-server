@@ -1,5 +1,5 @@
 networks:
-  hades:
+  sdrserver:
     driver: bridge
   cloudflaretunnel:
     driver: bridge
@@ -7,34 +7,34 @@ networks:
 services:
   #
   # Traefik
-  hades-traefik:
+  sdrserver-traefik:
     networks:
-      - hades
+      - sdrserver
       - cloudflaretunnel
   #
   # Cloudflared Tunnel
-  hades-cloudflared:
+  sdrserver-cloudflared:
     image: cloudflare/cloudflared:latest
-    container_name: hades-cloudflared
+    container_name: sdrserver-cloudflared
     restart: unless-stopped
     networks:
       - cloudflaretunnel
-    command: tunnel run --url http://hades-traefik
+    command: tunnel run --url http://sdrserver-traefik
     environment:
       - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
     depends_on:
-      hades-traefik:
+      sdrserver-traefik:
         condition: service_started
   #
   # Glances
-  hades-glances:
+  sdrserver-glances:
     networks:
-      - hades
+      - sdrserver
       - cloudflaretunnel
     labels:
       - traefik.enable=true
       # Default
-      - traefik.http.services.hades-glances.loadbalancer.server.port=61208
-      - traefik.http.routers.hades-glances.service=hades-glances
-      - traefik.http.routers.hades-glances.entrypoints=web
-      - traefik.http.routers.hades-glances.rule=Host(`glances-sdr.andrelom.com`)
+      - traefik.http.services.sdrserver-glances.loadbalancer.server.port=61208
+      - traefik.http.routers.sdrserver-glances.service=sdrserver-glances
+      - traefik.http.routers.sdrserver-glances.entrypoints=web
+      - traefik.http.routers.sdrserver-glances.rule=Host(`glances-sdr.andrelom.com`)
