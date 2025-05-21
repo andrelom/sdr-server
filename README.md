@@ -1,8 +1,8 @@
 # SDR Server
 
-A ready-to-use Docker-based setup for deploying a Spy Server for Software Defined Radio (SDR) applications.
+A ready-to-use Docker-based setup for deploying a AirSpy Server for Software Defined Radio (SDR) applications.
 
-This project provides Docker Compose configurations and supporting files to simplify the deployment and management of Spy Server instances, along with various enhancements and features for flexible SDR operations.
+This project provides Docker Compose configurations and supporting files to simplify the deployment and management of AirSpy Server instances, along with various enhancements and features for flexible SDR operations.
 
 For detailed information about the underlying server software used in this project, please visit the official [AirSpy](https://airspy.com/download/).
 
