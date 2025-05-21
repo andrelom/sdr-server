@@ -20,6 +20,25 @@ services:
       - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
   #
+  # AirSpy Server
+  sdrserver-airspy:
+    build:
+      context: ./docker/airspy/build
+      dockerfile: Dockerfile
+      args:
+        AIRSPY_TARGET_PLATFORM: ${AIRSPY_TARGET_PLATFORM}
+    container_name: sdrserver-airspy
+    restart: unless-stopped
+    privileged: true
+    networks:
+      - sdrserver
+    ports:
+      - 5555:5555
+    volumes:
+      - ./docker/airspy/data:/airspy/data
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+  #
   # Glances
   sdrserver-glances:
     image: nicolargo/glances:latest
@@ -39,22 +58,3 @@ services:
       - traefik.http.routers.sdrserver-glances.service=sdrserver-glances
       - traefik.http.routers.sdrserver-glances.entrypoints=web
       - traefik.http.routers.sdrserver-glances.rule=Host(`glances.sdrserver.localhost`)
-  #
-  # AirSpy Server
-  sdrserver-airspy:
-    build:
-      context: ./docker/airspy/build
-      dockerfile: Dockerfile
-      args:
-        AIRSPY_TARGET_PLATFORM: ${AIRSPY_TARGET_PLATFORM}
-    container_name: sdrserver-airspy
-    restart: unless-stopped
-    privileged: true
-    networks:
-      - sdrserver
-    ports:
-      - 5555:5555
-    volumes:
-      - ./docker/airspy/data:/airspy/data
-    devices:
-      - /dev/bus/usb:/dev/bus/usb
