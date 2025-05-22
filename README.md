@@ -11,7 +11,7 @@ If you’d like to learn more about the software that powers this project, check
 
 ## Summary
 
-The container provides the SpyServer application running on port `5555`. It also exposes several tools, which are listed below:
+The container runs the AirSpy Server alongside OpenWebRX, providing easy web-based access to radio streams. It also comes with other helpful tools:
 
 | Service   | Description                               | URL                                |
 | --------- | ----------------------------------------- | ---------------------------------- |
