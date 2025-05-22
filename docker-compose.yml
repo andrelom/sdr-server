@@ -39,6 +39,26 @@ services:
     devices:
       - /dev/bus/usb:/dev/bus/usb
   #
+  # OpenWebRX
+  sdrserver-openwebrx:
+    image: jketterl/openwebrx:stable
+    container_name: sdrserver-openwebrx
+    restart: unless-stopped
+    privileged: true
+    networks:
+      - sdrserver
+    volumes:
+      - ./docker/openwebrx/data:/var/lib/openwebrx
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+    labels:
+      - traefik.enable=true
+      # Default
+      - traefik.http.services.sdrserver-openwebrx.loadbalancer.server.port=8073
+      - traefik.http.routers.sdrserver-openwebrx.service=sdrserver-openwebrx
+      - traefik.http.routers.sdrserver-openwebrx.entrypoints=web
+      - traefik.http.routers.sdrserver-openwebrx.rule=Host(`openwebrx.sdrserver.localhost`)
+  #
   # Glances
   sdrserver-glances:
     image: nicolargo/glances:latest

@@ -12,6 +12,19 @@ services:
       - sdrserver
       - cloudflaretunnel
   #
+  # OpenWebRX
+  sdrserver-openwebrx:
+    networks:
+      - sdrserver
+      - cloudflaretunnel
+    labels:
+      - traefik.enable=true
+      # Default
+      - traefik.http.services.sdrserver-openwebrx.loadbalancer.server.port=8073
+      - traefik.http.routers.sdrserver-openwebrx.service=sdrserver-openwebrx
+      - traefik.http.routers.sdrserver-openwebrx.entrypoints=web
+      - traefik.http.routers.sdrserver-openwebrx.rule=Host(`openwebrx-sdr.andrelom.com`)
+  #
   # Glances
   sdrserver-glances:
     networks:
