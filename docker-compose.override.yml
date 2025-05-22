@@ -6,6 +6,20 @@ networks:
 
 services:
   #
+  # Cloudflared Tunnel
+  sdrserver-cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: sdrserver-cloudflared
+    restart: unless-stopped
+    networks:
+      - cloudflaretunnel
+    command: tunnel run --url http://sdrserver-traefik
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      sdrserver-traefik:
+        condition: service_started
+  #
   # Traefik
   sdrserver-traefik:
     networks:
@@ -37,17 +51,3 @@ services:
       - traefik.http.routers.sdrserver-glances.service=sdrserver-glances
       - traefik.http.routers.sdrserver-glances.entrypoints=web
       - traefik.http.routers.sdrserver-glances.rule=Host(`glances-sdr.andrelom.com`)
-  #
-  # Cloudflared Tunnel
-  sdrserver-cloudflared:
-    image: cloudflare/cloudflared:latest
-    container_name: sdrserver-cloudflared
-    restart: unless-stopped
-    networks:
-      - cloudflaretunnel
-    command: tunnel run --url http://sdrserver-traefik
-    environment:
-      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
-    depends_on:
-      sdrserver-traefik:
-        condition: service_started
