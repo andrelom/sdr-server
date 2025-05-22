@@ -4,6 +4,7 @@
 tmp/
 
 docker/airspy/data/
+docker/openwebrx/data/
 
 #
 # Files
