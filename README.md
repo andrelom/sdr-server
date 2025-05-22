@@ -1,19 +1,23 @@
 # SDR Server
 
-A ready-to-use Docker-based setup for deploying a AirSpy Server for Software Defined Radio (SDR) applications.
+This project offers an easy-to-use Docker setup for running an AirSpy Server and OpenWebRX, making it simple to get started with Software Defined Radio (SDR) applications.
 
-This project provides Docker Compose configurations and supporting files to simplify the deployment and management of AirSpy Server instances, along with various enhancements and features for flexible SDR operations.
+It includes Docker Compose configurations and all the necessary files to help you quickly deploy and manage the servers. Plus, it comes with various enhancements and features to support flexible SDR operations.
 
-For detailed information about the underlying server software used in this project, please visit the official [AirSpy](https://airspy.com/download/).
+If you’d like to learn more about the software that powers this project, check out the official sites:
+
+- [AirSpy](https://airspy.com/)
+- [OpenWebRX](https://www.openwebrx.de/)
 
 ## Summary
 
 The container provides the SpyServer application running on port `5555`. It also exposes several tools, which are listed below:
 
-| Service   | Description                  | URL                              |
-| --------- | ---------------------------- | -------------------------------- |
-| SpyServer | The AirSpy SDR server.       | sdr://localhost:5555             |
-| Glances   | Real-time system monitoring. | https://glances-sdr.andrelom.com |
+| Service   | Description                               | URL                                |
+| --------- | ----------------------------------------- | ---------------------------------- |
+| AirSpy    | The AirSpy SDR server.                    | sdr://localhost:5555               |
+| OpenWebRX | Accessible, browser-based radio receiver. | https://openwebrx-sdr.andrelom.com |
+| Glances   | Real-time system monitoring.              | https://glances-sdr.andrelom.com   |
 
 ## Getting Started
 
